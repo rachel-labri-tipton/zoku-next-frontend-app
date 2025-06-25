@@ -7,13 +7,11 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 3,
+        pb: 10,
         px: 2,
         mt: 'auto',
         backgroundColor: 'white',
         color: 'black',
-        borderTop: 2,
-        borderColor: 'black'
       }}
     >
       <Container maxWidth="lg">
@@ -25,14 +23,15 @@ export default function Footer() {
             fontFamily: 'Raleway, sans-serif',
             '& span': {
               fontSize: '0.875rem',
+              fontStyle: 'italic',
               display: 'block',
               mt: 1,
               opacity: 0.8
             }
           }}
         >
-          "Last year was the moment to start, but today will have to do."
-          <span>- Chris Guillebeau</span>
+          <span>Last year was the moment to start, but today will have to do.</span>
+          <span>- Chris Guillebeau -</span>
         </Typography>
       </Container>
     </Box>

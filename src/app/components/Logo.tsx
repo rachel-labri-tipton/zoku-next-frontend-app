@@ -7,8 +7,8 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ 
-  width = 512, 
-  height = 512, 
+  width = 1024,
+  height = 1024,
   className = ''
 }) => {
   return (
@@ -20,8 +20,11 @@ const Logo: React.FC<LogoProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       style={{ transform: 'rotate(180deg)' }}
     >
-      <rect width="100%" 
-        height="100%" 
+      <rect 
+        width="1024" 
+        height="1024" 
+        x = '0'
+        y='0'
         fill="black"
     />
       <path

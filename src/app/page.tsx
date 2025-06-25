@@ -2,24 +2,25 @@ import Logo from "@/app/components/Logo";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 dark:bg-black">
-      <div className="flex flex-col items-center space-y-8">
-        <Logo 
-          className="transform transition-transform hover:scale-110" 
-          height={200} 
-          width={150} 
-        />
-      
-        <h1
-          className="text-black dark:text-white font-bold tracking-tight leading-none text-center"
+    <div className="flex flex-col items-center h-[calc(90vh-120px)] px-4 py-8 dark:bg-black">
+      <div className="flex flex-col items-center justify-center flex-1 gap-4">
+      <h1
+          className="text-black dark:text-white font-bold tracking-tight leading-none text-center z-10 mb-8"
           style={{
-            fontSize: "clamp(3rem, 12vw, 7rem)",
+            fontSize: "clamp(4rem, 14vw, 9rem)",
             textRendering: "optimizeLegibility",
             textShadow: "1.5px 1.5px 0 rgba(68, 68, 68, 0.067), 2px 2px 5px rgba(221, 221, 221, 0.467)",
           }}
         >
           Zoku
         </h1>
+        <Logo 
+          className="transform transition-transform mb-6" 
+          height={200} 
+          width={200} 
+        />
+      
+        
 
         <p className="text-lg text-gray-700 dark:text-gray-300">
           a minimalist calendar app
