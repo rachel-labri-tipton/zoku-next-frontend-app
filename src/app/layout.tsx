@@ -11,10 +11,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body>
-        <AuthProvider>
-          <UserProvider>
+        {/* <AuthProvider>
+          <UserProvider> */}
             <Providers>
               <div className="min-h-screen flex flex-col">
                 <Header />
@@ -24,8 +24,8 @@ export default function RootLayout({
                 <Footer />
               </div>
             </Providers>
-          </UserProvider>
-        </AuthProvider>
+          {/* </UserProvider>
+        </AuthProvider> */}
       </body>
     </html>
   )

@@ -57,7 +57,7 @@ const DailyViewPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-2 py-6 flex flex-col gap-8 font-karla">
+    <div className="w-full max-w-3xl mx-auto px-2 py-6 flex flex-col gap-8 font-raleway">
       <Breadcrumbs />
       {/* Daily Tasks Sidebar (Slide-out Panel) Trigger */}
       <TodoListSidebar />
@@ -67,7 +67,7 @@ const DailyViewPage: React.FC = () => {
         <button
           onClick={handlePrevDay}
           aria-label="Previous Day"
-          className="rounded-full border-2 border-black w-11 h-11 flex items-center justify-center text-xl bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0_0_black]"
+          className="rounded-full w-11 h-11 flex items-center justify-center text-xl bg-white transition-colors duration-200 cursor-pointer focus:outline-none hover:bg-gray-900 hover:text-white shadow-[4px_4px_0_0_black]"
         >
           <ArrowLeft />
         </button>
@@ -80,10 +80,10 @@ const DailyViewPage: React.FC = () => {
         <button
           onClick={handleNextDay}
           aria-label="Next Day"
-          className="rounded-full border-2 border-black w-11 h-11 flex items-center justify-center text-xl bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0_0_black]"
+          className="rounded-full w-11 h-11 flex items-center justify-center text-xl bg-white transition-colors duration-200 cursor-pointer hover:bg-gray-900 hover:text-white"
         >
           <ArrowRight />
-        </button>
+        </button>fe
       </div>
 
       {/* Time slots and Events */}
