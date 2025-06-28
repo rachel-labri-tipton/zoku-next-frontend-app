@@ -1,6 +1,8 @@
 # Zoku Calendar App
 
-A full-stack time tracking and calendar management application built with Next.js, Express, and PostgreSQL.
+Zoku is a full-stack time tracking and calendar management application built with Next.js, Express, and PostgreSQL. It's MVP version is deployed on Railway (backend) and Netlify (frontend). 
+
+The MVP is a web application with responsive design. For the MVP of this project I'm tried for the following features: 
 
 ## Features
 
@@ -10,13 +12,29 @@ A full-stack time tracking and calendar management application built with Next.j
 - Goal setting and progress tracking
 - Responsive design for all devices
 
+## Inspiration
+
+There are a lot of time and goal tracking apps out there. 
+
+Here are a few I've researched: 
+
+[any.do](https://www.any.do/)
+[The Fabulous](https://www.thefabulous.co/)
+[Habitica](https://habitica.com/)
+[monday.com](https://monday.com/)
+[Oak-Meditation & Breathing](https://apps.apple.com/fr/app/oak-meditation-breathing/id1210209691)
+[Dawn - Minimal Calendar](https://apps.apple.com/us/app/dawn-minimal-calendar/id1509374383)
+
 ## Tech Stack
 
 ### Frontend
 - Next.js 13+
 - React
 - TailwindCSS
+- Material UI
 - TypeScript
+- date-fns
+
 
 ### Backend
 - Express.js
@@ -36,6 +54,19 @@ erDiagram
     Events ||--o{ TimeLogs : tracks
     Todos ||--o{ TimeLogs : tracks
 ```
+
+## Database Diagram
+
+![zoku app database diagram](./docs/db-diagrams.png)
+
+## Initial wireframes
+![zoku app wireframe v1](./docs/Version-One-wireframes.png)
+![zoku app wireframes v2-1](./docs/Wireframes-V2-1.png)
+![zoku app wireframes v2-2](./docs/Wireframes-V2-2.png)
+
+## Deployed application
+![deployed zoku app screen shot](./docs/Zoku-screenshot.png)
+
 
 ## Architecture
 
@@ -154,23 +185,58 @@ cp .env.example .env
 npm run dev
 ```
 
-## Testing
+# Running the Next.js Frontend
 
-```bash
-# Run unit tests
-npm test
+1. Clone the frontend repository (if separate):
+   ```bash
+   git clone https://github.com/yourusername/zoku-next-frontend-app.git
+   cd zoku-next-frontend-app
+   ```
 
-# Run integration tests
-npm run test:integration
-```
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Create a `.env.local` file for environment variables (see `.env.example` if provided).
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+
+**Note:**  
+- Make sure your backend server is running and the frontend `.env.local` is configured to point to the correct API URL.
+- For production, use `npm run build` and `npm start`.
 
 ## Deployment
 
-[Add deployment instructions]
+[Instructions to be added]
 
-## Contributing
 
-[Add contribution guidelines]
+## Origin Story
+
+Every project has a story. Here's some of the Zoku app's story. 
+
+As someone who loves to do lists and time management in both her personal and professional life, I wanted to create an application that reflects my personal aesthetics and my personal approach to time tracking. The MVP does not fully capture all the nuances, but it's a start. As a programmer, an artist, a writer, someone who has had a previous career as a translator, editor and university language instructor, I have learned to be intentional about my time. 
+
+I also wanted to build a project that I can have as a side project for awhile and that I can add features to over time. For example, I've built the backend with Express and know I can build I have ideas for customization. 
+
+As part of Women Coding Community's 2025 Summer/Fall mentee cohort, I decided to use my time (3 hours a month) with my mentor developing a side project that was not yet another tutorial project. 
+
+
+The backend deployment is [here].  
+
+For the purposes of this project, I'm running the frontend locally. 
+
+For a demo, you can use the `Demo Login` button and these user credentials: 
+
 
 ## License
 
