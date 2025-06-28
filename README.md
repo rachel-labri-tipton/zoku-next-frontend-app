@@ -124,6 +124,7 @@ graph TD
 - PUT /events/:id
 - DELETE /events/:id
 
+The following routes have not yet been integrated into the other models of the application. 
 
 ### Categories
 - GET /categories
@@ -137,11 +138,11 @@ graph TD
 - GET /time-logs/daily
 - GET /time-logs/category/:id
 
-## Local Development
+# Running the Express Backend app
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/zoku-calendar.git
+git clone https://github.com/rachel-labri-tipton/zoku-calendar-app-backend.git
 ```
 
 2. Install dependencies:
@@ -206,7 +207,7 @@ I also wanted to build a project that I can have as a side project for awhile an
 As part of Women Coding Community's 2025 Summer/Fall mentee cohort, I decided to use my time (3 hours a month) with my mentor developing a side project that was not yet another tutorial project. 
 
 
-The backend deployment is [here].  
+The backend deployment is [here]().  
 
 For the purposes of this project, I'm running the frontend locally. 
 
