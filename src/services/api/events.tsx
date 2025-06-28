@@ -4,27 +4,55 @@ import { get } from 'http';
 
 export const eventService = {
   getAll: async () => {
-    const { data } = await api.get<Event[]>('/events');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const { data } = await api.get<Event[]>('/events', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
   getById: async (id: string) => {
-    const { data } = await api.get<Event>(`/events/${id}`);
+    const token = localStorage.getItem('token');
+    const { data } = await api.get<Event>(`/events/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
   create: async (event: Omit<Event, 'id'>) => {
-    const { data } = await api.post<Event>('/events', event);
+    const token = localStorage.getItem('token');
+    const { data } = await api.post<Event>('/events', event, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
   update: async (id: string, event: Partial<Event>) => {
-    const { data } = await api.patch<Event>(`/events/${id}`, event);
+    const token = localStorage.getItem('token');
+    const { data } = await api.patch<Event>(`/events/${id}`, event, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
   delete: async (id: string) => {
-    await api.delete(`/events/${id}`);
+    const token = localStorage.getItem('token');
+    await api.delete(`/events/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
 

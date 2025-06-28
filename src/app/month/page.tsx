@@ -1,10 +1,23 @@
 'use client';
 
-import React, { useState } from "react";
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, format, addMonths, subMonths, isSameDay, isSameMonth, isToday } from "date-fns";
+import React, { use, useState } from 'react';
+import {
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  format,
+  addMonths,
+  subMonths,
+  isSameDay,
+  isSameMonth,
+  isToday,
+} from 'date-fns';
 import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
 import { Button, Paper, Box, Typography } from '@mui/material';
 import clsx from 'clsx';
+import { useEventHandlers } from '@/app/hooks/useEventHandlers';
 
 // import SketchyButton from "../components/SketchyButton";
 import EventModal from '../components/EventModal';
@@ -20,6 +33,12 @@ const sampleEvents: Record<string, number> = {
   ['2025-06-19']: 2,
   ['2025-06-25']: 1,
 };
+
+const events = useEventHandlers();
+console.log(events);
+
+
+
 
 type DayModalProps = {
   date: Date | null;

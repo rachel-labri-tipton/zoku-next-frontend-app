@@ -16,11 +16,13 @@ import {
   Box,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { start } from 'repl';
 
 interface EventData {
   id?: string;
   title: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   time: string;
   desc: string;
   recurring: boolean;
@@ -44,7 +46,8 @@ const EventModal: React.FC<EventModalProps> = ({
   initialEvent,
 }) => {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(initialDate || '');
+  const [startDate, setDate] = useState(initialDate || '');
+  const [endDate, setEndDate] = useState(initialDate || '');
   const [time, setTime] = useState('');
   const [desc, setDesc] = useState('');
   const [recurring, setRecurring] = useState(false);
@@ -52,13 +55,15 @@ const EventModal: React.FC<EventModalProps> = ({
   useEffect(() => {
     if (open && initialEvent) {
       setTitle(initialEvent.title || '');
-      setDate(initialEvent.date || initialDate || '');
+      setDate(initialEvent.startDate || initialDate || '');
+      setEndDate(initialEvent.endDate || initialDate || '');
       setTime(initialEvent.time || '');
       setDesc(initialEvent.desc || '');
       setRecurring(initialEvent.recurring || false);
     } else if (open) {
       setTitle('');
       setDate(initialDate || '');
+      setEndDate(initialDate || '');
       setTime('');
       setDesc('');
       setRecurring(false);
@@ -66,11 +71,12 @@ const EventModal: React.FC<EventModalProps> = ({
   }, [open, initialEvent, initialDate]);
 
   const handleSubmit = () => {
-    if (title && date) {
+    if (title && startDate) {
       onSave({
         id: initialEvent?.id,
         title,
-        date,
+        startDate: startDate,
+        endDate: endDate || startDate,
         time,
         desc,
         recurring,
@@ -141,7 +147,7 @@ const EventModal: React.FC<EventModalProps> = ({
             label="Date"
             type="date"
             fullWidth
-            value={date}
+            value={startDate}
             onChange={e => setDate(e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
