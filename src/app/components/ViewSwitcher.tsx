@@ -1,47 +1,41 @@
 'use client'
 
-import React, { useState } from 'react';
-import { 
-  Button, 
-  Menu, 
-  MenuItem, 
-  ListItemIcon, 
-  Typography 
-} from '@mui/material';
-import { 
-  CalendarViewDay, 
-  CalendarViewWeek, 
+import React, { useState, useEffect } from 'react';
+import { Button, Menu, MenuItem, ListItemIcon, Typography, Divider } from '@mui/material';
+import {
+  CalendarViewDay,
+  CalendarViewWeek,
   CalendarViewMonth,
   ViewDay,
   Check,
-  KeyboardArrowDown 
+  KeyboardArrowDown,
 } from '@mui/icons-material';
 import { useRouter, usePathname } from 'next/navigation';
 
 const views = [
-  { 
-    id: 'day', 
-    label: 'Day View', 
+  {
+    id: 'day',
+    label: 'Day View',
     path: '/day',
-    icon: <CalendarViewDay /> 
+    icon: <CalendarViewDay />,
   },
-  { 
-    id: 'three-day', 
-    label: 'Three Day View', 
+  {
+    id: 'three-day',
+    label: 'Three Day View',
     path: '/three-day',
-    icon: <ViewDay /> 
+    icon: <ViewDay />,
   },
-  { 
-    id: 'week', 
-    label: 'Week View', 
+  {
+    id: 'week',
+    label: 'Week View',
     path: '/week',
-    icon: <CalendarViewWeek /> 
+    icon: <CalendarViewWeek />,
   },
-  { 
-    id: 'month', 
-    label: 'Month View', 
+  {
+    id: 'month',
+    label: 'Month View',
     path: '/month',
-    icon: <CalendarViewMonth /> 
+    icon: <CalendarViewMonth />,
   },
 ];
 
@@ -50,7 +44,14 @@ export default function ViewSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const currentView = views.find(view => pathname.startsWith(view.path)) || views[0];
+  // Check if user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('token'));
+  }, []);
+
+  const currentView =
+    views.find(view => pathname === view.path || pathname.startsWith(view.path + '/')) || views[0];
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,6 +67,8 @@ export default function ViewSwitcher() {
     handleClose();
   };
 
+  const isHome = pathname === '/';
+
   return (
     <>
       <Button
@@ -76,7 +79,6 @@ export default function ViewSwitcher() {
         onClick={handleClick}
         endIcon={<KeyboardArrowDown />}
         sx={{
-          color: 'black',
           borderWidth: 2,
           borderColor: 'black',
           '&:hover': {
@@ -84,13 +86,11 @@ export default function ViewSwitcher() {
             borderColor: 'black',
             backgroundColor: 'black',
             color: 'white',
-          }
+          },
         }}
         variant="outlined"
       >
-        <ListItemIcon sx={{ minWidth: 'auto', mr: 1 }}>
-          {currentView.icon}
-        </ListItemIcon>
+        <ListItemIcon sx={{ minWidth: 'auto', mr: 1 }}>{currentView.icon}</ListItemIcon>
         {currentView.label}
       </Button>
       <Menu
@@ -107,20 +107,36 @@ export default function ViewSwitcher() {
             mt: 1,
             border: 2,
             borderColor: 'black',
+            borderRadius: 2,
+            boxShadow: '4px 4px 0 0 #000',
+            minWidth: 220,
           },
         }}
       >
-        {views.map((view) => (
-          <MenuItem 
+        {/* Show "Select View" or "View Selection" at the top */}
+        {/* <Typography
+          variant="subtitle2"
+          sx={{
+            px: 2,
+            py: 1,
+            fontWeight: 700,
+            color: 'black',
+            letterSpacing: 1,
+            textTransform: 'uppercase',
+          }}
+        >
+          {isHome ? 'Select View' : 'View Selection'}
+        </Typography> */}
+        <Divider sx={{ my: 1 }} />
+        {views.map(view => (
+          <MenuItem
             key={view.id}
             onClick={() => handleViewChange(view.path)}
-            selected={pathname.startsWith(view.path)}
+            selected={pathname === view.path || pathname.startsWith(view.path + '/')}
           >
-            <ListItemIcon>
-              {view.icon}
-            </ListItemIcon>
+            <ListItemIcon>{view.icon}</ListItemIcon>
             <Typography variant="inherit">{view.label}</Typography>
-            {pathname.startsWith(view.path) && (
+            {(pathname === view.path || pathname.startsWith(view.path + '/')) && (
               <ListItemIcon sx={{ ml: 'auto' }}>
                 <Check />
               </ListItemIcon>

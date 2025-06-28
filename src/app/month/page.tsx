@@ -2,22 +2,23 @@
 
 import React, { useState } from "react";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, format, addMonths, subMonths, isSameDay, isSameMonth, isToday } from "date-fns";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button, Paper, Box, Typography} from "@mui/material"
-import clsx from "clsx";
+import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
+import { Button, Paper, Box, Typography } from '@mui/material';
+import clsx from 'clsx';
 
 // import SketchyButton from "../components/SketchyButton";
-import EventModal from "../components/EventModal";
-import Breadcrumbs from "../components/Breadcrumbs";
+import EventModal from '../components/EventModal';
+import Breadcrumbs from '../components/Breadcrumbs';
+import ArrowButton from '../components/ArrowButton';
 
 // Dummy data for events
 const sampleEvents: Record<string, number> = {
   // Format: "YYYY-MM-DD": numberOfEvents
-  ["2025-06-01"]: 2,
-  ["2025-06-04"]: 1,
-  ["2025-06-15"]: 3,
-  ["2025-06-19"]: 2,
-  ["2025-06-25"]: 1,
+  ['2025-06-01']: 2,
+  ['2025-06-04']: 1,
+  ['2025-06-15']: 3,
+  ['2025-06-19']: 2,
+  ['2025-06-25']: 1,
 };
 
 type DayModalProps = {
@@ -30,26 +31,26 @@ const DayModal: React.FC<DayModalProps> = ({ date, onClose }) => {
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/20">
       <div className="bg-white rounded-xl shadow-lg p-6 min-w-[300px] animate-fade-in relative">
-        <button className="absolute top-2 right-2 text-gray-500 hover:text-black" onClick={onClose}>✕</button>
-        <h2 className="text-xl font-semibold mb-2">{format(date, "MMMM d, yyyy")}</h2>
+        <button className="absolute top-2 right-2 text-gray-500 hover:text-black" onClick={onClose}>
+          ✕
+        </button>
+        <h2 className="text-xl font-semibold mb-2">{format(date, 'MMMM d, yyyy')}</h2>
         <p className="text-gray-700">Events for this day will go here.</p>
       </div>
     </div>
   );
 };
 
-const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const MonthView: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
-  const [showEventModal, setShowEventModal] = useState(true);
-  const [customEvents, setCustomEvents] = useState<
-    { title: string; date: string }[]
-  >([]);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [customEvents, setCustomEvents] = useState<{ title: string; date: string }[]>([]);
 
   // Helper to format YYYY-MM-DD
-  const toKey = (date: Date) => format(date, "yyyy-MM-dd");
+  const toKey = (date: Date) => format(date, 'yyyy-MM-dd');
 
   // Get all visible days in the calendar for the given month
   const monthStart = startOfMonth(currentMonth);
@@ -102,133 +103,152 @@ const MonthView: React.FC = () => {
     desc: string;
     recurring: boolean;
   }) {
-    setCustomEvents((prev) => [...prev, { title: ev.title, date: ev.date }]);
+    setCustomEvents(prev => [...prev, { title: ev.title, date: ev.date }]);
     setShowEventModal(false);
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto my-6 px-2">
+    <div className="w-full max-w-3xl mx-auto my-10 px-2">
       <Breadcrumbs />
       {/* Month navigation */}
-      <Paper 
-      elevation={0}
-      sx={{
-        border: 2,
-        borderColor: 'black',
-        borderRadius: 4,
-        overflow: 'hidden'
-      }}
-    >
-      {/* Day headers */}
-      <Box 
+      <div className="flex items center justify-between">
+        <ArrowButton direction="left" onClick={handlePrevMonth} ariaLabel="Previous Period" />
+
+        <div className="flex flex-col items-center">
+          <Calendar className="mb-1 opacity-60" />
+          <span className="text-2xl font-bold mb-1 tracking-tight">
+            {format(currentMonth, 'MMMM yyyy')}
+          </span>
+        </div>
+        <ArrowButton direction="right" onClick={handleNextMonth} ariaLabel="Next Period" />
+      </div>
+      <Paper
+        elevation={0}
         sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          bgcolor: 'grey.100',
-          borderBottom: 2,
-          borderColor: 'black'
+          border: 2,
+          borderColor: 'black',
+          borderRadius: 4,
+          overflow: 'hidden',
+          marginTop: 3,
         }}
       >
-        {daysShort.map(d => (
-          <Box
-            key={d}
-            sx={{
-              py: 2,
-              textAlign: 'center',
-              fontWeight: 600,
-              fontSize: { xs: '0.75rem', sm: '1rem' },
-              color: 'grey.700',
-              borderRight: 1,
-              borderColor: 'grey.300',
-              '&:last-child': {
-                borderRight: 0
-              }
-            }}
-          >
-            {d}
-          </Box>
-        ))}
-      </Box>
+        {/* Day headers */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            bgcolor: 'grey.100',
+            borderBottom: 2,
+            borderColor: 'black',
+          }}
+        >
+          {daysShort.map(d => (
+            <Box
+              key={d}
+              sx={{
+                py: 2,
+                textAlign: 'center',
+                fontWeight: 600,
+                fontSize: { xs: '0.75rem', sm: '1rem' },
+                color: 'grey.700',
+                borderRight: 1,
+                borderColor: 'grey.300',
+                '&:last-child': {
+                  borderRight: 0,
+                },
+              }}
+            >
+              {d}
+            </Box>
+          ))}
+        </Box>
 
-      {/* Calendar days */}
-      <Box>
-        {weeks.map((week, i) => (
-          <Box
-            key={i}
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(7, 1fr)',
-              borderBottom: i < weeks.length - 1 ? 2 : 0,
-              borderColor: 'black'
-            }}
-          >
-            {week.map((date, idx) => {
-              const dayKey = toKey(date);
-              const isCurrent = isToday(date);
-              const isThisMonth = isSameMonth(date, currentMonth);
-              const hasEvents = eventsCountForDate(date);
+        {/* Calendar days */}
+        <Box>
+          {weeks.map((week, i) => (
+            <Box
+              key={i}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, 1fr)',
+                borderBottom: i < weeks.length - 1 ? 2 : 0,
+                borderColor: 'black',
+              }}
+            >
+              {week.map((date, idx) => {
+                const dayKey = toKey(date);
+                const isCurrent = isToday(date);
+                const isThisMonth = isSameMonth(date, currentMonth);
+                const hasEvents = eventsCountForDate(date);
 
-              return (
-                <Box
-                  key={idx}
-                  onClick={() => handleDayClick(date)}
-                  component="button"
-                  sx={{
-                    position: 'relative',
-                    aspectRatio: '1/1',
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    pt: 1,
-                    gap: 0.5,
-                    borderRight: idx < 6 ? 2 : 0,
-                    borderColor: 'black',
-                    bgcolor: isThisMonth ? 'white' : 'grey.50',
-                    '&:hover': {
-                      bgcolor: 'grey.100',
-                    },
-                    ...(isCurrent && {
-                      bgcolor: 'primary.light',
-                      '&:hover': {
-                        bgcolor: 'primary.main',
-                      }
-                    })
-                  }}
-                >
-                  <Typography
+                return (
+                  <Box
+                    key={idx}
+                    onClick={() => handleDayClick(date)}
+                    component="button"
                     sx={{
-                      fontWeight: 600,
-                      fontSize: { xs: '1rem', sm: '1.25rem' },
-                      color: isThisMonth ? 'text.primary' : 'text.disabled'
+                      position: 'relative',
+                      aspectRatio: '1/1',
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      pt: 1,
+                      gap: 0.5,
+                      borderRight: idx < 6 ? 2 : 0,
+                      borderColor: 'black',
+                      bgcolor: isThisMonth ? 'white' : 'grey.50',
+                      '&:hover': {
+                        bgcolor: 'grey.100',
+                      },
+                      ...(isCurrent && {
+                        bgcolor: 'black',
+                        '&:hover': {
+                          bgcolor: '#333',
+                        },
+                      }),
                     }}
                   >
-                    {date.getDate()}
-                  </Typography>
-                  
-                  {/* Event dots */}
-                  <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5, height: 8 }}>
-                    {Array.from({ length: Math.min(3, hasEvents) }).map((_, dotIdx) => (
-                      <Box
-                        key={dotIdx}
-                        sx={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          bgcolor: dotIdx === 0 ? 'pink.400' :
-                                  dotIdx === 1 ? 'warning.main' :
-                                  'success.main'
-                        }}
-                      />
-                    ))}
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: { xs: '1rem', sm: '1.25rem' },
+                        color: isThisMonth ? 'text.primary' : 'text.disabled',
+                        ...(isCurrent && {
+                          color: 'white',
+                          fontWeight: 'bold',
+                        }),
+                      }}
+                    >
+                      {date.getDate()}
+                    </Typography>
+
+                    {/* Event dots */}
+                    <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5, height: 8 }}>
+                      {Array.from({ length: Math.min(3, hasEvents) }).map((_, dotIdx) => (
+                        <Box
+                          key={dotIdx}
+                          sx={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            bgcolor:
+                              dotIdx === 0
+                                ? 'pink.400'
+                                : dotIdx === 1
+                                  ? 'warning.main'
+                                  : 'success.main',
+                          }}
+                        />
+                      ))}
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })}
-          </Box>
-        ))}
-      </Box>
-    </Paper>
+                );
+              })}
+            </Box>
+          ))}
+        </Box>
+      </Paper>
       <DayModal date={selectedDay} onClose={handleCloseModal} />
       <EventModal
         open={showEventModal}

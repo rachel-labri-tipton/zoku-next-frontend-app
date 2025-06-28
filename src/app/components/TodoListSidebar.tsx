@@ -58,16 +58,26 @@ export default function TodoListSidebar() {
       <Button
         variant="outlined"
         onClick={() => setIsOpen(true)}
+        // sx={{
+        //   position: 'fixed',
+        //   right: '1rem',
+        //   top: '6rem',
+        //   zIndex: 40,
+        //   gap: 1,
+        //   borderWidth: 2,
+        //   '&:hover': {
+        //     borderWidth: 2
+        //   }
+        // }}
         sx={{
-          position: 'fixed',
-          right: '1rem',
-          top: '6rem',
-          zIndex: 40,
-          gap: 1,
           borderWidth: 2,
+          borderColor: 'black',
           '&:hover': {
-            borderWidth: 2
-          }
+            borderWidth: 2,
+            borderColor: 'black',
+            backgroundColor: 'black',
+            color: 'white',
+          },
         }}
         startIcon={<FormatListBulleted />}
       >
@@ -83,8 +93,8 @@ export default function TodoListSidebar() {
             width: 320,
             p: 3,
             borderLeft: 2,
-            borderColor: 'black'
-          }
+            borderColor: 'black',
+          },
         }}
       >
         <Stack spacing={3}>
@@ -106,15 +116,15 @@ export default function TodoListSidebar() {
                 {completedCount}/{tasks.length} done
               </Typography>
             </Box>
-            <LinearProgress 
-              variant="determinate" 
-              value={progress} 
+            <LinearProgress
+              variant="determinate"
+              value={progress}
               sx={{ height: 8, borderRadius: 4 }}
             />
           </Box>
 
           <List sx={{ py: 0 }}>
-            {tasks.map((task) => (
+            {tasks.map(task => (
               <ListItem
                 key={task.id}
                 sx={{
@@ -130,10 +140,10 @@ export default function TodoListSidebar() {
                 <Checkbox
                   checked={task.completed}
                   onChange={() => handleToggleTask(task.id)}
-                  sx={{ 
+                  sx={{
                     '&.Mui-checked': {
                       color: 'black',
-                    }
+                    },
                   }}
                 />
                 <ListItemText
@@ -156,8 +166,8 @@ export default function TodoListSidebar() {
               sx={{
                 borderWidth: 2,
                 '&:hover': {
-                  borderWidth: 2
-                }
+                  borderWidth: 2,
+                },
               }}
             >
               Add Task

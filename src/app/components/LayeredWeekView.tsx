@@ -86,59 +86,67 @@ const WeekViewPage: React.FC = () => {
         </div>
 
         {/* Calendar Grid */}
-        <div className="bg-white w-full border-2 border-black rounded-xl p-6 shadow-[4px_4px_0_0_black]">
-          <div
-            className="grid rounded-lg overflow-hidden min-w-[1100px]"
-            style={{
-              gridTemplateColumns: '80px repeat(7, minmax(50px, 1fr))',
-              borderBottom: '1px solid #d1d5db',
-            }}
-          >
-            {/* Header Row */}
-            <div /> {/* Empty cell for time column */}
-            {days.map(day => (
-              <div key={day.toISOString()} className="text-center font-bold pb-2">
-                {format(day, 'EEE')}
-                <div className="text-sm text-gray-500">{format(day, 'd')}</div>
-              </div>
-            ))}
-            {/* Time slots rows */}
-            {timeSlots.map(time => (
-              <React.Fragment key={time}>
-                {/* Time label */}
-                <div className="text-sm font-mono text-gray-500 pr-4 h-16 flex items-end justify-end">
-                  {time}
-                </div>
-                {/* Time slots for each day */}
+        <div className="bg-white border-2 border-black rounded-xl p-6 shadow-[4px_4px_0_0_black]">
+          <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-x-2">
+            {/* Time Column */}
 
-                {days.map(day => (
-                  <button
-                    key={format(day, 'yyyy-MM-dd') + time}
-                    onClick={() => {
-                      const selectedDate = format(day, 'yyyy-MM-dd');
-                      // Open event creation modal
-                      console.log(`Create event: ${selectedDate} ${time}`);
-                    }}
-                    style={{
-                      borderBottom: '1px solid #d1d5db',
-                      borderRight: '1px solid #d1d5db',
-                    }}
-                    className="w-full h-16 rounded-lg transition-all duration-200 relative group flex items-center justify-center"
-                  >
-                    {/* Event placeholder */}
-                    {(eventsByDay[format(day, 'yyyy-MM-dd')] || []).some(
-                      ev => ev.time === time
-                    ) && (
-                      <div className="absolute inset-x-1 top-1 bottom-1 bg-blue-50 border-2 border-blue-300 rounded-md px-2 py-1 text-xs text-blue-700 font-medium truncate">
-                        {(eventsByDay[format(day, 'yyyy-MM-dd')] || [])
-                          .filter(ev => ev.time === time)
-                          .map(ev => ev.title)
-                          .join(', ')}
+            {/* Day Columns */}
+            {days.map(day => (
+              <div key={format(day, 'yyyy-MM-dd')} className="min-w-[120px]">
+                {/* Day Header */}
+                <div className="text-center pb-4 font-medium sticky top-0">
+                  <div className="text-lg font-bold">{format(day, 'EEE')}</div>
+                  <div className="text-sm text-gray-500">{format(day, 'd')}</div>
+                </div>
+                <div className="bg-white border-2 border-black rounded-xl p-6 shadow-[4px_4px_0_0_black] overflow-x-auto">
+                  <div className="grid grid-cols-[auto_repeat(7,minmax(0,1fr))]">
+                    {/* Day headers row */}
+                    <div /> {/* Empty cell for time column */}
+                    {days.map(day => (
+                      <div
+                        key={format(day, 'yyyy-MM-dd')}
+                        className="text-center pb-4 font-medium sticky top-0 z-10 bg-white"
+                      >
+                        <div className="text-lg font-bold">{format(day, 'EEE')}</div>
+                        <div className="text-sm text-gray-500">{format(day, 'd')}</div>
                       </div>
-                    )}
-                  </button>
-                ))}
-              </React.Fragment>
+                    ))}
+                    {/* Time slots rows */}
+                    {timeSlots.map(time => (
+                      <React.Fragment key={time}>
+                        {/* Time label */}
+                        <div className="text-sm border-2 border-blackfont-mono text-gray-500 pr-4 h-16 flex items-center justify-end">
+                          {time}
+                        </div>
+                        {/* Time slots for each day */}
+                        {days.map(day => (
+                          <button
+                            key={format(day, 'yyyy-MM-dd') + time}
+                            onClick={() => {
+                              const selectedDate = format(day, 'yyyy-MM-dd');
+                              // Open event creation modal
+                              console.log(`Create event: ${selectedDate} ${time}`);
+                            }}
+                            className="w-full h-16 border-2 border-gray-300 rounded-lg hover:border-black hover:bg-gray-50 transition-all duration-200 relative group flex items-center justify-center"
+                          >
+                            {/* Event placeholder */}
+                            {(eventsByDay[format(day, 'yyyy-MM-dd')] || []).some(
+                              ev => ev.time === time
+                            ) && (
+                              <div className="absolute inset-x-1 top-1 bottom-1 bg-blue-50 border-2 border-blue-300 rounded-md px-2 py-1 text-xs text-blue-700 font-medium truncate">
+                                {(eventsByDay[format(day, 'yyyy-MM-dd')] || [])
+                                  .filter(ev => ev.time === time)
+                                  .map(ev => ev.title)
+                                  .join(', ')}
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
