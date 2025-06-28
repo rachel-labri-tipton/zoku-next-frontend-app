@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
-import { 
+import {
   Avatar,
   Menu,
   MenuItem,
@@ -10,20 +10,21 @@ import {
   IconButton,
   Switch,
   Divider,
-  Box
+  Box,
 } from '@mui/material';
-import {
-  DarkMode,
-  Person,
-  Settings,
-  Logout
-} from '@mui/icons-material';
+import { DarkMode, Person, Settings, Logout } from '@mui/icons-material';
+import { authService } from '@/services/api/auth'; // Adjust the import path as necessary
 import { useTheme } from 'next-themes';
+import { useAuth } from '@/context/AuthContext'; // Adjust the import path as necessary
+import { useRouter } from 'next/navigation'; // Use the correct import for useRouter
 
 export default function UserProfileMenu() {
+  // State to manage the menu anchor element
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { theme, setTheme } = useTheme();
   const open = Boolean(anchorEl);
+  const { isLoggedIn, login, logout } = useAuth(); // Use the auth context to manage login state
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -37,25 +38,35 @@ export default function UserProfileMenu() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
+  const handleLogout = () => {
+    logout();
+    handleClose(); // Close the menu after   authService.logout();
+    router.push('/'); // Redirect to login page after logout
+    // Optionally, you can redirect the user after logout
+    // window.location.href = '/login'; // Redirect to login page
+  };
+
+  if (!isLoggedIn) return null; // Hide menu if not logged in
+
   return (
     <>
       <IconButton
         onClick={handleClick}
-        sx={{ 
+        sx={{
           border: 2,
           borderColor: 'black',
-          p: 0.5
+          p: 0.5,
         }}
       >
-        <Avatar 
-          sx={{ 
-            width: 32, 
+        <Avatar
+          sx={{
+            width: 32,
             height: 32,
             bgcolor: 'black',
-            color: 'white'
+            color: 'white',
           }}
         >
-          U
+          DU
         </Avatar>
       </IconButton>
 
@@ -74,25 +85,23 @@ export default function UserProfileMenu() {
         }}
       >
         <Box sx={{ px: 2, py: 1 }}>
-          <Avatar 
-            sx={{ 
-              width: 56, 
+          <Avatar
+            sx={{
+              width: 56,
               height: 56,
               mb: 1,
               bgcolor: 'black',
               cursor: 'pointer',
               '&:hover': {
-                opacity: 0.8
-              }
+                opacity: 0.8,
+              },
             }}
             onClick={() => alert('Avatar selection coming soon!')}
           >
-            U
+            DU
           </Avatar>
           <Box>User Name</Box>
-          <Box sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
-            user@email.com
-          </Box>
+          <Box sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>user@email.com</Box>
         </Box>
 
         <Divider sx={{ my: 1, borderColor: 'grey.300' }} />
@@ -102,11 +111,7 @@ export default function UserProfileMenu() {
             <DarkMode fontSize="small" />
           </ListItemIcon>
           <ListItemText>Dark Mode</ListItemText>
-          <Switch 
-            edge="end"
-            checked={theme === 'dark'}
-            onChange={handleThemeChange}
-          />
+          <Switch edge="end" checked={theme === 'dark'} onChange={handleThemeChange} />
         </MenuItem>
 
         <MenuItem>
@@ -118,7 +123,7 @@ export default function UserProfileMenu() {
 
         <Divider sx={{ my: 1, borderColor: 'grey.300' }} />
 
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

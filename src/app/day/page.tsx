@@ -44,10 +44,6 @@ const DayViewPage: React.FC = () => {
         {/* Daily Tasks Sidebar (Slide-out Panel) Trigger */}
       <DailyViewPage />
 
-      {/* Right side - Task List */}
-      <div className="w-full lg:w-1/4">
-        <TodoListSidebar />
-      </div>
     </>
   );
 };

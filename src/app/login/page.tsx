@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { Button, TextField, IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,8 +37,8 @@ const LoginPage: React.FC = () => {
       }
 
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        router.push('/day');
+        login(data.token);
+        router.push('/');
       } else {
         throw new Error('No token received');
       }

@@ -42,24 +42,50 @@ export interface Event extends BaseModel {
   userId: string;
 }
 
-export interface TodoList extends BaseModel {
-  title: string;
-  description?: string;
-  color: string;
-  userId: string;
-}
-
 export type Priority = 'low' | 'medium' | 'high';
 export type Status = 'pending' | 'in_progress' | 'completed';
 
-export interface Todo extends BaseModel {
+export interface Todo {
+  id: string;
   title: string;
   description?: string;
-  dueDate?: string;
+  dueDate?: Date;
   priority: Priority;
   status: Status;
+  todoListId?: string;
+  userId: string;
   order: number;
-  todoListId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  creator?: User;
+  todoList?: TodoList;
+}
+
+export interface TodoList {
+  id: string;
+  title: string;
+  todos?: Todo[];
+  userId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface TodoInput {
+  title: string;
+  description?: string;
+  dueDate?: Date;
+  priority?: Priority;
+  status?: Status;
+  todoListId?: string;
+  order?: number;
+}
+
+export interface TodoModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSave?: (todo: TodoInput) => Promise<void>;
+  initialTodo?: Partial<Todo>;
+  todoListId?: string;
 }
 
 export interface Settings extends BaseModel {

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { 
+import React, { useState, useEffect } from 'react';
+import {
   Dialog,
   DialogTitle,
   DialogContent,
@@ -13,48 +13,62 @@ import {
   FormControlLabel,
   Stack,
   Typography,
-  Box
-} from "@mui/material";
+  Box,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
+interface EventData {
+  id?: string;
+  title: string;
+  date: string;
+  time: string;
+  desc: string;
+  recurring: boolean;
+}
 
 interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (event: {
-    title: string;
-    date: string;
-    time: string;
-    desc: string;
-    recurring: boolean;
-  }) => void;
+  onSave: (event: EventData) => void;
+  onDelete?: (id: string) => void;
   initialDate?: string;
+  initialEvent?: EventData | null;
 }
 
 const EventModal: React.FC<EventModalProps> = ({
   open,
   onClose,
   onSave,
+  onDelete,
   initialDate,
+  initialEvent,
 }) => {
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState(initialDate || "");
-  const [time, setTime] = useState("");
-  const [desc, setDesc] = useState("");
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState(initialDate || '');
+  const [time, setTime] = useState('');
+  const [desc, setDesc] = useState('');
   const [recurring, setRecurring] = useState(false);
 
   useEffect(() => {
-    if (!open) {
-      setTitle(""); 
-      setDate(initialDate || ""); 
-      setTime(""); 
-      setDesc(""); 
+    if (open && initialEvent) {
+      setTitle(initialEvent.title || '');
+      setDate(initialEvent.date || initialDate || '');
+      setTime(initialEvent.time || '');
+      setDesc(initialEvent.desc || '');
+      setRecurring(initialEvent.recurring || false);
+    } else if (open) {
+      setTitle('');
+      setDate(initialDate || '');
+      setTime('');
+      setDesc('');
       setRecurring(false);
     }
-  }, [open, initialDate]);
+  }, [open, initialEvent, initialDate]);
 
   const handleSubmit = () => {
     if (title && date) {
       onSave({
+        id: initialEvent?.id,
         title,
         date,
         time,
@@ -62,13 +76,19 @@ const EventModal: React.FC<EventModalProps> = ({
         recurring,
       });
     } else {
-      window.alert("Please fill in event title and date!");
+      window.alert('Please fill in event title and date!');
+    }
+  };
+
+  const handleDelete = () => {
+    if (onDelete && initialEvent?.id) {
+      onDelete(initialEvent.id);
     }
   };
 
   return (
-    <Dialog 
-      open={open} 
+    <Dialog
+      open={open}
       onClose={onClose}
       PaperProps={{
         sx: {
@@ -78,24 +98,26 @@ const EventModal: React.FC<EventModalProps> = ({
           width: '95vw',
           maxWidth: '450px',
           p: 2,
-          boxShadow: '4px 4px 0 0 #000'
-        }
+          boxShadow: '4px 4px 0 0 #000',
+        },
       }}
     >
-      <DialogTitle sx={{ 
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: '1.5rem',
-        pb: 2
-      }}>
-        Create New Event
+      <DialogTitle
+        sx={{
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontSize: '1.5rem',
+          pb: 2,
+        }}
+      >
+        {initialEvent ? 'Edit Event' : 'Create New Event'}
         <IconButton
           aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
             right: 16,
-            top: 16
+            top: 16,
           }}
         >
           <CloseIcon />
@@ -109,7 +131,7 @@ const EventModal: React.FC<EventModalProps> = ({
             label="Event Title"
             fullWidth
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             placeholder="What's happening?"
             required
             sx={{ mt: 1 }}
@@ -120,7 +142,7 @@ const EventModal: React.FC<EventModalProps> = ({
             type="date"
             fullWidth
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={e => setDate(e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
           />
@@ -130,7 +152,7 @@ const EventModal: React.FC<EventModalProps> = ({
             type="time"
             fullWidth
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={e => setTime(e.target.value)}
             InputLabelProps={{ shrink: true }}
           />
 
@@ -140,7 +162,7 @@ const EventModal: React.FC<EventModalProps> = ({
             rows={3}
             fullWidth
             value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={e => setDesc(e.target.value)}
             placeholder="Add some notes..."
           />
 
@@ -148,24 +170,35 @@ const EventModal: React.FC<EventModalProps> = ({
             <Typography>Repeat?</Typography>
             <FormControlLabel
               control={
-                <Switch 
-                  checked={recurring}
-                  onChange={(e) => setRecurring(e.target.checked)}
-                />
+                <Switch checked={recurring} onChange={e => setRecurring(e.target.checked)} />
               }
-              label={recurring ? "Recurring" : "One-time"}
+              label={recurring ? 'Recurring' : 'One-time'}
             />
           </Box>
         </Stack>
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 3, pt: 2 }}>
+        {initialEvent && onDelete && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDelete}
+            sx={{
+              borderWidth: 2,
+              mr: 'auto',
+              '&:hover': { borderWidth: 2 },
+            }}
+          >
+            Delete
+          </Button>
+        )}
         <Button
           variant="outlined"
           onClick={onClose}
-          sx={{ 
+          sx={{
             borderWidth: 2,
-            '&:hover': { borderWidth: 2 }
+            '&:hover': { borderWidth: 2 },
           }}
         >
           Cancel
@@ -173,10 +206,10 @@ const EventModal: React.FC<EventModalProps> = ({
         <Button
           variant="contained"
           onClick={handleSubmit}
-          sx={{ 
+          sx={{
             borderWidth: 2,
             borderColor: 'black',
-            '&:hover': { borderWidth: 2 }
+            '&:hover': { borderWidth: 2 },
           }}
         >
           Save

@@ -10,19 +10,14 @@ import ViewSwitcher from './ViewSwitcher';
 import CreateMenu from './CreateMenu';
 import UserProfileMenu from './UserProfileMenu'; // Assuming you have a UserProfileMenu component
 import TodoListSidebar from './TodoListSidebar';
+import { useAuth } from '@/context/AuthContext';
 
 // Memoize the Logo component to prevent unnecessary re-renders
 const MemoizedLogo = memo(Logo);
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    // Check if user is logged in by looking for token
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
+  const { isLoggedIn, login, logout } = useAuth();
 
   const MenuItems = () => (
     <>
@@ -39,7 +34,7 @@ const Header = () => {
           className="px-4 w-full md:w-auto"
           onClick={() => router.push('/login')}
         >
-          Login
+          Demo Login
         </Button>
       )}
     </>

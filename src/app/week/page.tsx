@@ -38,6 +38,8 @@ const WeekViewPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dateStr = searchParams.get('date') || format(new Date(), 'yyyy-MM-dd');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({ date: '', time: '', event: null });
 
   const dateObj = useMemo(() => {
     const parsed = parse(dateStr, 'yyyy-MM-dd', new Date());
@@ -55,6 +57,30 @@ const WeekViewPage: React.FC = () => {
     const next = addDays(weekStart, 7);
     router.push(`/week?date=${format(next, 'yyyy-MM-dd')}`);
   }
+
+  const handleSlotClick = (date, time) => {
+    setModalData({ date, time, event: null });
+    setModalOpen(true);
+  };
+
+  const handleSaveEvent = eventData => {
+    setEvents(prev =>
+      prev.some(ev => ev.id === eventData.id)
+        ? prev.map(ev => (ev.id === eventData.id ? eventData : ev))
+        : [...prev, { ...eventData, id: eventData.id || crypto.randomUUID() }]
+    );
+    setModalOpen(false);
+  };
+
+  const handleEventClick = event => {
+    setModalData({ date: event.date, time: event.time, event });
+    setModalOpen(true);
+  };
+
+  const handleDeleteEvent = id => {
+    setEvents(prev => prev.filter(ev => ev.id !== id));
+    setModalOpen(false);
+  };
 
   const timeSlots = getTimeSlots();
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));

@@ -1,86 +1,41 @@
 'use client';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import api from '@/utils/axios';
-
-interface AuthContextType {
-  token: string | null;
-  login: (email: string, password: string) => Promise<void>;
+type AuthContextType = {
+  isLoggedIn: boolean;
+  login: (token: string) => void;
   logout: () => void;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-}
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-    setIsLoading(false);
+    setIsLoggedIn(!!localStorage.getItem('token'));
+    const onStorage = () => setIsLoggedIn(!!localStorage.getItem('token'));
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await api.post('/auth/login', { email, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      console.log('Raw response:', response); // Debug log
-
-      // Fixed token extraction
-      const newToken = response.data?.token
-      console.log('Extracted token:', newToken); // Debug log
-      if (!newToken) {
-        throw new Error('No token received in response');
-      }
-
-      localStorage.setItem('token', newToken);
-      setToken(newToken);
-      console.log('Token set:', newToken); // Debug log
-      return response.data;
-    } catch (error) {
-      console.error('Login error details:', {
-        error,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      throw error;
-    }
+  const login = (token: string) => {
+    localStorage.setItem('token', token);
+    setIsLoggedIn(true);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
+    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider 
-      value={{
-        token,
-        login,
-        logout,
-        isAuthenticated: !!token,
-        isLoading
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>{children}</AuthContext.Provider>
   );
-}
+};
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  return ctx;
 }
