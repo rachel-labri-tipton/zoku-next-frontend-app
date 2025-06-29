@@ -12,6 +12,13 @@ The MVP is a web application with responsive design. For the MVP of this project
 - Goal setting and progress tracking
 - Responsive design for all devices
 
+![Demo of Zoku Calendar App] (./docs/zoku-app-video-1.gif)
+
+
+
+![Demo of Zoku Calendar App Responsive design] (./docs/zoku-app-video-responsive.gif)
+
+
 ## Inspiration
 
 There are a lot of time and goal tracking apps out there. 
