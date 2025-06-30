@@ -6,7 +6,7 @@ Zoku is a Japanese term that hints towards continuity or continuation. I wanted 
 
 ### Frontend App Running Locally
 
-The MVP is a web application with responsive design. Here is a demo video.
+The MVP is a web application with responsive design. Here is a demo video: 
 
 ![Demo of Zoku Calendar App](./docs/zoku-calendar-video-1.gif)
 
