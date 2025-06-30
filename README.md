@@ -5,6 +5,11 @@ Zoku is a full-stack time tracking and calendar management application built wit
 Zoku is a Japanese term that hints towards continuity or continuation. I wanted to build a calendar app that gives the user a sense of continuity and connection between the different pieces of their schedule. 
 
 ### Frontend App Running Locally
+Zoku is a full-stack time tracking and calendar management application built with Next.js, Express, and PostgreSQL. It's MVP version is deployed on Railway (backend) and currently the frontend runs locally.
+
+Zoku is a Japanese term that hints towards continuity or continuation. I wanted to build a calendar app that gives the user a sense of continuity and connection between the different pieces of their schedule. 
+
+### Frontend App Running Locally
 
 The MVP is a web application with responsive design. Here are some visuals.
 
