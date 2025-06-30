@@ -40,7 +40,7 @@ const ThreeDayViewPage: React.FC = () => {
   const eventsByDay = days.reduce(
     (acc, day) => {
       const key = format(day, 'yyyy-MM-dd');
-      acc[key] = sampleEvents[key] || [];
+      acc[key] = sampleEvents.filter(ev => ev.date === key);
       return acc;
     },
     {} as Record<string, { time: string; title: string }[]>

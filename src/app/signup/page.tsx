@@ -31,10 +31,10 @@ const SignUpPage: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
       <div className="w-full max-w-md bg-white border shadow-lg rounded-2xl p-8 flex flex-col gap-6">
         <h2 className="text-2xl font-bold font-raleway mb-4 text-center">Sign Up</h2>
-        <form  className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4">
           <div>
-            <TextField htmlFor="email">Email</TextField>
             <TextField
+              label="Email"
               type="email"
               id="email"
               autoComplete="email"
@@ -46,8 +46,8 @@ const SignUpPage: React.FC = () => {
             />
           </div>
           <div>
-            <TextField htmlFor="password">Password</TextField>
             <TextField
+              label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -59,22 +59,23 @@ const SignUpPage: React.FC = () => {
           </div>
 
           <div>
-            <TextField htmlFor="password">Confirm Password</TextField>
             <TextField
+              label="Confirm Password"
               type="password"
-              id="password"
-              autoComplete="current-password"
+              id="confirm-password"
+              autoComplete="new-password"
               required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={''}
+              onChange={() => {}}
               className="mt-1"
             />
           </div>
-          <Button type="submit" className="w-full">Submit</Button>
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
         </form>
-      
+
         {/* Forgot Password Modal */}
-        
       </div>
     </div>
   );

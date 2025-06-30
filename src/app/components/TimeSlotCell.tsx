@@ -1,11 +1,38 @@
 import React, { useState } from 'react';
 import EventModal from './EventModal';
 
-const TimeSlotCell = ({ date, time, events, onSave, onDelete, cellStyle = {} }) => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(null);
 
-  const handleCellClick = e => {
+export interface TimeSlotEvent {
+  id?: string;
+  title: string;
+  date: string;
+  time: string;
+  desc?: string;
+  recurring?: boolean;
+  [key: string]: any; // for any extra fields
+}
+
+export interface TimeSlotCellProps {
+  date: string;
+  time: string;
+  events: TimeSlotEvent[];
+  onSave: (event: TimeSlotEvent) => void;
+  onDelete: (id: string) => void;
+  cellStyle?: React.CSSProperties;
+}
+
+const TimeSlotCell: React.FC<TimeSlotCellProps> = ({
+  date,
+  time,
+  events,
+  onSave,
+  onDelete,
+  cellStyle = {},
+}) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<TimeSlotEvent | null>(null);
+
+  const handleCellClick = (e: { target: any; currentTarget: any }) => {
     // Only open modal for creating if not clicking on an event
     if (e.target === e.currentTarget) {
       setEditingEvent(null);
@@ -13,18 +40,21 @@ const TimeSlotCell = ({ date, time, events, onSave, onDelete, cellStyle = {} }) 
     }
   };
 
-  const handleEventClick = (event, e) => {
+  const handleEventClick = (
+    event: TimeSlotEvent,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     e.stopPropagation();
     setEditingEvent(event);
     setModalOpen(true);
   };
 
-  const handleSave = eventData => {
+  const handleSave = (eventData: TimeSlotEvent) => {
     onSave(eventData);
     setModalOpen(false);
   };
 
-  const handleDelete = id => {
+  const handleDelete = (id: string) => {
     onDelete(id);
     setModalOpen(false);
   };
@@ -52,12 +82,23 @@ const TimeSlotCell = ({ date, time, events, onSave, onDelete, cellStyle = {} }) 
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
-        onDelete={editingEvent ? () => handleDelete(editingEvent.id) : undefined}
+        onDelete={
+          editingEvent && editingEvent.id
+            ? () => handleDelete(editingEvent.id as string)
+            : undefined
+        }
         initialDate={date}
         initialEvent={
           editingEvent
-            ? { ...editingEvent, date, time }
-            : { date, time, title: '', desc: '', recurring: false }
+            ? {
+                ...editingEvent,
+                desc: editingEvent.desc ?? '',
+                startDate: editingEvent.startDate ?? date,
+                endDate: editingEvent.endDate ?? date,
+                recurring: editingEvent.recurring ?? false,
+                time: editingEvent.time ?? time,
+              }
+            : { title: '', desc: '', recurring: false, startDate: date, endDate: date, time }
         }
       />
     </>

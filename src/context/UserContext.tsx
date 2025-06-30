@@ -16,11 +16,11 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { token, isAuthenticated } = useAuth();
+  const { token, isLoggedIn } = useAuth();
 
   useEffect(() => {
     async function fetchUser() {
-      if (isAuthenticated && token) {
+      if (isLoggedIn && token) {
         try {
           const { data } = await api.get('/users/me');
           setUser(data);
@@ -33,7 +33,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
 
     fetchUser();
-  }, [isAuthenticated, token]);
+  }, [isLoggedIn, token]);
 
   return (
     <UserContext.Provider 

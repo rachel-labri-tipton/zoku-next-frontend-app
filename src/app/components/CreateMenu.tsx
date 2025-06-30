@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import EventModal from './EventModal';
 import TodoListModal from './TodoListModal';
+import EventModal from './EventModal';
 
 const CreateMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -19,22 +19,19 @@ const CreateMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleCreateEvent = async (eventData: {
-    title: string;
-    date: string;
-    time: string;
-    desc: string;
-    recurring: boolean;
-  }) => {
+  // Import EventData type from EventModal if not already imported
+  // import type { EventData } from './EventModal';
+
+  const handleCreateEvent = async (eventData: any) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(eventData)
+        body: JSON.stringify(eventData),
       });
 
       if (!response.ok) {
@@ -50,19 +47,16 @@ const CreateMenu = () => {
     }
   };
 
-  const handleCreateTodo = async (todoData: {
-    text: string;
-    completed: boolean;
-  }) => {
+  const handleCreateTodo = async (todoData: { text: string; completed: boolean }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/todos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(todoData)
+        body: JSON.stringify(todoData),
       });
 
       if (!response.ok) {
@@ -85,9 +79,9 @@ const CreateMenu = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(todoData)
+        body: JSON.stringify(todoData),
       });
 
       if (!response.ok) {
@@ -112,7 +106,12 @@ const CreateMenu = () => {
         sx={{
           borderWidth: 2,
           borderColor: 'black',
-          '&:hover': { borderWidth: 2, borderColor: 'black', backgroundColor: 'black', color: 'white' },
+          '&:hover': {
+            borderWidth: 2,
+            borderColor: 'black',
+            backgroundColor: 'black',
+            color: 'white',
+          },
         }}
       >
         Create
@@ -126,11 +125,11 @@ const CreateMenu = () => {
           sx: {
             borderRadius: 2,
             border: '2px solid black',
-            boxShadow: '4px 4px 0 0 #000'
-          }
+            boxShadow: '4px 4px 0 0 #000',
+          },
         }}
       >
-        <MenuItem 
+        <MenuItem
           onClick={() => {
             handleClose();
             setEventModalOpen(true);
@@ -138,7 +137,7 @@ const CreateMenu = () => {
         >
           New Event
         </MenuItem>
-        <MenuItem 
+        <MenuItem
           onClick={() => {
             handleClose();
             setTodoModalOpen(true);
@@ -155,10 +154,7 @@ const CreateMenu = () => {
         initialDate={new Date().toISOString().split('T')[0]}
       />
 
-      <TodoListModal
-        open={todoModalOpen}
-        onClose={() => setTodoModalOpen(false)}
-      />
+      <TodoListModal open={todoModalOpen} onClose={() => setTodoModalOpen(false)} />
     </>
   );
 };

@@ -6,7 +6,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
-import OldHeader from '@/app/components/OldHeader';
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -4,7 +4,7 @@ export async function fetchEvents() {
   return res.json();
 }
 
-export async function createEvent(eventData) {
+export async function createEvent(eventData: { id: any }) {
   const res = await fetch('/api/events', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -14,7 +14,7 @@ export async function createEvent(eventData) {
   return res.json();
 }
 
-export async function updateEvent(id, eventData) {
+export async function updateEvent(id: any, eventData: any) {
   const res = await fetch(`/api/events/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -24,7 +24,7 @@ export async function updateEvent(id, eventData) {
   return res.json();
 }
 
-export async function deleteEvent(id) {
+export async function deleteEvent(id: any) {
   const res = await fetch(`/api/events/${id}`, { method: 'DELETE' });
   if (!res.ok) throw new Error('Failed to delete event');
   return res.json();

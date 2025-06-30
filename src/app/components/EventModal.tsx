@@ -17,8 +17,9 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { start } from 'repl';
+import { TimeSlotEvent } from './TimeSlotCell';
 
-interface EventData {
+export interface EventData {
   id?: string;
   title: string;
   startDate: string;
@@ -28,10 +29,10 @@ interface EventData {
   recurring: boolean;
 }
 
-interface EventModalProps {
+export interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (event: EventData) => void;
+  onSave: (event: TimeSlotEvent) => void;
   onDelete?: (id: string) => void;
   initialDate?: string;
   initialEvent?: EventData | null;
@@ -80,6 +81,7 @@ const EventModal: React.FC<EventModalProps> = ({
         time,
         desc,
         recurring,
+        date: '',
       });
     } else {
       window.alert('Please fill in event title and date!');

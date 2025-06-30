@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type AuthContextType = {
   isLoggedIn: boolean;
+  token: string | null;
   login: (token: string) => void;
   logout: () => void;
 };
@@ -11,10 +12,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem('token'));
-    const onStorage = () => setIsLoggedIn(!!localStorage.getItem('token'));
+    const storedToken = localStorage.getItem('token');
+    setIsLoggedIn(!!storedToken);
+    setToken(storedToken);
+    const onStorage = () => {
+      const updatedToken = localStorage.getItem('token');
+      setIsLoggedIn(!!updatedToken);
+      setToken(updatedToken);
+    };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
@@ -22,15 +30,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (token: string) => {
     localStorage.setItem('token', token);
     setIsLoggedIn(true);
+    setToken(token);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isLoggedIn, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

@@ -2,18 +2,21 @@ import { useState, useEffect } from 'react';
 import eventService from '@/services/api/events'
 import * as api from '../api/events';
 
+export interface Event {
+  id: any;
+  [key: string]: any;
+}
+
 export function useEventHandlers() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    eventService.getAll()
-      .then(setEvents)
-      .catch(console.error);
+    eventService.getAll().then(setEvents).catch(console.error);
   }, []);
 
-  const handleSaveEvent = async (eventData: { id: any; }) => {
+  const handleSaveEvent = async (eventData: { id: any }) => {
     try {
-      let saved: { id: any; };
+      let saved: { id: any };
       if (eventData.id) {
         saved = await eventService.update(eventData.id, eventData);
         setEvents(prev => prev.map(ev => (ev.id === saved.id ? saved : ev)));

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Dialog, TextField, Button, MenuItem, Stack, DialogTitle, IconButton } from '@mui/material';
-import { TodoModalProps, TodoInput, Priority, Status } from '@/types/todo';
+import { TodoModalProps, TodoInput, Priority, Status } from '@/types'; // Adjust the import path as necessary
 
 const TodoListModal: React.FC<TodoModalProps> = ({
   open,

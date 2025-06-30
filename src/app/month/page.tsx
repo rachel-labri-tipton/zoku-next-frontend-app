@@ -115,12 +115,13 @@ const MonthView: React.FC = () => {
     return hardcoded + custom;
   }
 
+  // Update to accept TimeSlotEvent type (desc can be string | undefined)
   function handleSaveEvent(ev: {
     title: string;
     date: string;
     time: string;
-    desc: string;
-    recurring: boolean;
+    desc?: string;
+    recurring?: boolean;
   }) {
     setCustomEvents(prev => [...prev, { title: ev.title, date: ev.date }]);
     setShowEventModal(false);

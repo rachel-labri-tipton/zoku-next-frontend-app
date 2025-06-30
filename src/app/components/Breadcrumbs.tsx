@@ -44,23 +44,16 @@ export default function Breadcrumbs() {
         const isLast = index === crumbs.length - 1;
         
         return isLast ? (
-          <Typography 
-            key={crumb.href}
-            color="text.primary"
-            sx={{ fontWeight: 500 }}
-          >
+          <Typography key={crumb.href} color="text.primary" sx={{ fontWeight: 500 }}>
             {crumb.label}
           </Typography>
         ) : (
-          <Link 
+          <Link
             key={crumb.href}
             href={crumb.href}
-            style={{ 
+            style={{
               color: 'inherit',
               textDecoration: 'none',
-              '&:hover': {
-                textDecoration: 'underline'
-              }
             }}
           >
             {crumb.label}

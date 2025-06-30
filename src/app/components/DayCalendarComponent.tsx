@@ -3,9 +3,7 @@ import { useRouter } from 'next/navigation';
 import { format, addDays, subDays, parse } from 'date-fns';
 import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
 import Button from '@mui/material/Button';
-import SketchyButton from '@/components/SketchyButton';
 import TodoListSidebar from '../components/TodoListSidebar';
-import DailyTasksSidebar from '../components/DailyTasksSidebar';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ArrowButton from './ArrowButton';
 
